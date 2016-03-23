@@ -1,0 +1,176 @@
+<div class="row mainbox">
+    <ul class="nav navbar-right">
+        <li>
+            <header>
+                <a class="btn btn-danger btn-lg" ng-controller="LoginController" ng-click="logout()">Logout</a>
+            </header>
+        </li>
+    </ul>
+</div>
+<div class="row mainbox">
+    <div class="col-xs-5">
+        <h2>Contacts</h2>
+    </div>
+    <div class='main-header-controls col-xs-2 text-right'>
+        <div class="input-group">
+            <span class="input-group-btn">
+                <a class="btn btn-success create" href="#/add" data-toggle="modal" data-target="#create" title="Create"><i class="fa fa-plus"></i></a>
+            </span>
+        </div>
+    </div>
+    <div class="col-xs-5 text-right">
+        <form class="form-horizontal" id="search">
+            <div class="input-group">
+                <input name="name" class="form-control" placeholder="Name" id="search_name">
+                <span class="input-group-btn">
+                    <button class="btn btn-success" type="submit"><i class="fa fa-search"></i></button>
+                </span>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row" hidden="hidden" id="messageSuccess">
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ flashSuccess }}
+    </div>
+</div>
+<div class="container-content">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>e-Mail</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="contact in contacts">
+                <td>{{ contact.id}}</td>
+                <td>{{ contact.name}}</td>
+                <td>{{ contact.phone}}</td>
+                <td>{{ contact.address}}</td>
+                <td>{{ contact.email}}</td>
+                <td>
+                    <a class="btn btn-warning ui-component-tooltip edit" href="#/edit/{{contact.id}}" data-placement="rigth" data-toggle="modal" data-target="#edit" title="Edit"><i class="fa fa-edit"></i></a>
+                    <a ng-click="remove(contact.id, $index)"  class="btn btn-danger ui-action-delete ui-component-tooltip" data-placement="right" data-toggle="tooltip" title="Delete"><i class="fa fa-times"></i></a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div id="create" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Contact - Create</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form" id="cerate-contact">
+                        <div class="form-group">
+                            <label for="name" class="col-lg-2 control-label">Name</label>
+                            <div class="col-lg-8">
+                                <input name="name" ng-model="new.name" class="form-control" required="required" placeholder="Name" id="name">
+                                <span class="help-block">{{flashErrorName}}</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone" class="col-lg-2 control-label">Phone Number</label>
+                            <div class="col-lg-8">
+                                <input name="phone" ng-model="new.phone" class="form-control" type="number" required="required" placeholder="Phone Number" id="phone">
+                                <span class="help-block">{{flashErrorPhone}}</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address" class="col-lg-2 control-label">Address</label>
+                            <div class="col-lg-8">
+                                <textarea name="address" ng-model="new.address" class="form-control vresize" placeholder="Address" id="address"></textarea>
+                                <span class="help-block">{{flashErrorAddress}}</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email" class="col-lg-2 control-label">Email</label>
+                            <div class="col-lg-8">
+                                <input name="email" ng-model="new.email" class="form-control" type="email" required="required" placeholder="Email" id="email">
+                                <span class="help-block">{{ flashErrorEmail }}</span>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" ng-click="submit()" type="submit" >Save</button>
+                            <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="edit" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Contact - Edit</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form" id="edit-contact">
+                        <div class="form-group">
+                            <label for="name" class="col-lg-2 control-label">Name</label>
+                            <div class="col-lg-8">
+                                <input name="name" ng-model="contact.name" class="form-control" required="required" placeholder="Name" id="edit-name">
+                                 <span class="help-block">{{flashErrorName}}</span>
+                           </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="edit-phone" class="col-lg-2 control-label">Phone Number</label>
+                            <div class="col-lg-8">
+                                <input name="phone" ng-model="contact.phone" class="form-control" type="number" required="required" placeholder="Phone Number" id="edit-phone">
+                                 <span class="help-block">{{flashErrorPhone}}</span>
+                           </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="edit-address" class="col-lg-2 control-label">Address</label>
+                            <div class="col-lg-8">
+                                <textarea name="address" ng-model="contact.address" class="form-control vresize" placeholder="Address" id="edit-address"></textarea>
+                                <span class="help-block">{{flashErrorAddress}}</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="edit-email" class="col-lg-2 control-label">Email</label>
+                            <div class="col-lg-8">
+                                <input name="email" ng-model="contact.email" class="form-control" type="email" required="required" placeholder="Email" id="edit-email">
+                                 <span class="help-block">{{flashErrorEmail}}</span>
+                           </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button ng-click="submit()" class="btn btn-primary" type="submit" >Save</button>
+                            <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="container">
+        <nav class="collapse navbar-collapse" role="navigation">
+            <div class="text-right">
+
+            </div>
+        </nav>
+    </div>
+</footer>
